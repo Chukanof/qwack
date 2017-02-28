@@ -126,7 +126,7 @@ namespace Qwack.Curves.Benchmark
                 //NoOp
             }
 
-            public void SetupFeatures(FeatureCollection pathProcessFeaturesCollection)
+            public bool SetupFeatures(FeatureCollection pathProcessFeaturesCollection)
             {
                 var mappingFeature = pathProcessFeaturesCollection.GetFeature<IPathMappingFeature>();
                 for (int i = 0; i < _numberOfDimensions; i++)
@@ -138,6 +138,7 @@ namespace Qwack.Curves.Benchmark
                 {
                     dates.AddDate(DateTime.Now.Date.AddDays(i));
                 }
+                return false;
             }
         }
     }

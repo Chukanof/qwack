@@ -16,5 +16,19 @@ namespace Qwack.Paths.Features
             _dimensionNames.Add(dimensionName);
             return index;
         }
+
+        public bool TryFindDimension(string dimensionName, out int dimensionId)
+        {
+            for(int i =0; i< _dimensionNames.Count; i++)
+            {
+                if(_dimensionNames[i].Equals(dimensionName,StringComparison.OrdinalIgnoreCase))
+                {
+                    dimensionId = i;
+                    return true;
+                }
+            }
+            dimensionId = default(int);
+            return false;
+        }
     }
 }

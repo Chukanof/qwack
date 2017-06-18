@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Numerics;
+using System.Text;
 using Qwack.Paths.Features;
 using static System.Math;
 
 namespace Qwack.Paths.Processes
 {
-    public class ConstantVolSingleAsset : IPathProcess
+    public class FasterConstantVolSingleAsset : IPathProcess
     {
         private DateTime _startDate;
         private DateTime _expiry;
@@ -18,7 +20,7 @@ namespace Qwack.Paths.Processes
         private int _factorIndex;
         private ITimeStepsFeature _timesteps;
 
-        public ConstantVolSingleAsset(DateTime startDate, DateTime expiry, double vol, double spot, double drift, int numberOfSteps, string name)
+        public FasterConstantVolSingleAsset(DateTime startDate, DateTime expiry, double vol, double spot, double drift, int numberOfSteps, string name)
         {
             _startDate = startDate;
             _expiry = expiry;
@@ -32,6 +34,9 @@ namespace Qwack.Paths.Processes
 
         public void Process(IPathBlock block)
         {
+            var driftLocal = _drift;
+            var scaledLocal = _scaledVol;
+            var timeStepsLocal = _timesteps.TimeSteps;
             for (var path = 0; path < block.NumberOfPaths; path += Vector<double>.Count)
             {
                 //This should be set to the spot price here
@@ -40,8 +45,8 @@ namespace Qwack.Paths.Processes
                 steps[0] = previousStep;
                 for (var step = 1; step < block.NumberOfSteps; step++)
                 {
-                    var drift = _drift * _timesteps.TimeSteps[step] * previousStep;
-                    var delta = _scaledVol * steps[step] * previousStep;
+                    var drift = driftLocal * timeStepsLocal[step] * previousStep;
+                    var delta = scaledLocal * steps[step] * previousStep;
 
                     previousStep = (previousStep + drift + delta);
                     steps[step] = previousStep;
@@ -53,10 +58,10 @@ namespace Qwack.Paths.Processes
         {
             var mappingFeature = pathProcessFeaturesCollection.GetFeature<IPathMappingFeature>();
             _factorIndex = mappingFeature.AddDimension(_name);
-            
+
             _timesteps = pathProcessFeaturesCollection.GetFeature<ITimeStepsFeature>();
             var stepSize = (_expiry - _startDate).TotalDays / _numberOfSteps;
-            for(var i = 0; i < _numberOfSteps - 1;i++)
+            for (var i = 0; i < _numberOfSteps - 1; i++)
             {
                 _timesteps.AddDate(_startDate.AddDays(i * stepSize));
             }

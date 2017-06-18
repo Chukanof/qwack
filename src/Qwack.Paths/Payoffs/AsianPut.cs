@@ -35,7 +35,7 @@ namespace Qwack.Paths.Payoffs
             }
         }
 
-        public void Process(PathBlock block)
+        public void Process(IPathBlock block)
         {
             for (var path = 0; path < block.NumberOfPaths; path += Vector<double>.Count)
             {

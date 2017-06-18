@@ -7,6 +7,6 @@ namespace Qwack.Paths
     public interface IPathProcess
     {
         void SetupFeatures(FeatureCollection pathProcessFeaturesCollection);
-        void Process(PathBlock block);
+        void Process(IPathBlock block);
     }
 }

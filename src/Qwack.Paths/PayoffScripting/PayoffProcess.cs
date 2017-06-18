@@ -6,7 +6,7 @@ namespace Qwack.Paths.PayoffScripting
 {
     public abstract class PayoffProcess : IPathProcess
     {
-        public void Process(PathBlock block)
+        public void Process(IPathBlock block)
         {
             throw new NotImplementedException();
         }

@@ -15,7 +15,7 @@ namespace Qwack.Paths.PayoffScripting
         public string[] Aliases { get; set; }
         public string[][] Expresssions { get; set; }
 
-        public void Process(PathBlock block) => throw new NotImplementedException();
+        public void Process(IPathBlock block) => throw new NotImplementedException();
 
         public void SetupFeatures(FeatureCollection features)
         {

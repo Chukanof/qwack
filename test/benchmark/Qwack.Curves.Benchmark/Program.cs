@@ -14,7 +14,8 @@ namespace Qwack.Curves.Benchmark
             ["SolveOis"] = typeof(SolvingOisBenchmark),
             ["LinInterp"] = typeof(InterpolationBenchmark),
             ["VectorWrite"] = typeof(WritingDoubleVectorVsDouble),
-            ["MultiRegression"] = typeof(MultiLinearRegression)
+            ["MultiRegression"] = typeof(MultiLinearRegression),
+            ["MC"] = typeof(MCBenchmark)
         };
 
         public static void Main(string[] args)

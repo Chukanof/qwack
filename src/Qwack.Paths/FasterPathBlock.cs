@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Qwack.Paths
 {
-    public class PathBlock : IDisposable, IPathBlock
+    public class FasterPathBlock : IDisposable, IPathBlock
     {
         private readonly int _numberOfPaths;
         private readonly int _numberOfFactors;
@@ -16,12 +16,17 @@ namespace Qwack.Paths
         private GCHandle _handle;
         private double[] _backingArray;
         private static readonly int _vectorShift = (int)System.Math.Log(Vector<double>.Count, 2);
-        
-        public PathBlock(int numberOfPaths, int factors, int numberOfSteps)
+        private readonly int _factorJumpSize;
+        private readonly int _pathJumpSize;
+
+
+        public FasterPathBlock(int numberOfPaths, int factors, int numberOfSteps)
         {
             _numberOfPaths = numberOfPaths;
             _numberOfFactors = factors;
             _numberOfSteps = numberOfSteps;
+            _factorJumpSize = Vector<double>.Count* _numberOfSteps;
+            _pathJumpSize = _factorJumpSize * _numberOfFactors;
             _backingArray = new double[numberOfPaths * factors * numberOfSteps];
             _handle = GCHandle.Alloc(_backingArray, GCHandleType.Pinned);
         }
@@ -42,15 +47,12 @@ namespace Qwack.Paths
             var span = new Span<Vector<double>>(pointer, _numberOfSteps);
             return span;
         }
-
+               
         public int GetIndexOfPathStart(int pathId, int factorId)
         {
-            var factorJumpSize = Vector<double>.Count * _numberOfSteps;
-            var pathJumpSize = factorJumpSize * _numberOfFactors;
-            var pathIndex = pathId / Vector<double>.Count;
-
-            var pathDelta = pathIndex * pathJumpSize;
-            var factorDelta = factorJumpSize * factorId;
+            var pathIndex = pathId >> _vectorShift;
+            var pathDelta = pathIndex * _pathJumpSize;
+            var factorDelta = _factorJumpSize * factorId;
 
             var totalIndex = pathDelta + factorDelta;
             return totalIndex;
@@ -65,6 +67,6 @@ namespace Qwack.Paths
             GC.SuppressFinalize(this);
         }
 
-        ~PathBlock() => Dispose();
+        ~FasterPathBlock() => Dispose();
     }
 }

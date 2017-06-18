@@ -6,7 +6,7 @@ using Qwack.Paths.Features;
 
 namespace Qwack.Paths
 {
-    public class PathEngine : IEnumerable<IPathBlock>, IDisposable, IEngineFeature
+    public class FasterPathEngine : IEnumerable<IPathBlock>, IDisposable, IEngineFeature
     {
         private List<IPathProcess> _pathProcesses = new List<IPathProcess>();
         private List<object> _pathProcessFeatures = new List<object>();
@@ -14,9 +14,9 @@ namespace Qwack.Paths
         private FeatureCollection _featureCollection = new FeatureCollection();
         private int _dimensions;
         private int _steps;
-        private BlockSet _blockset;
+        private FasterBlockSet _blockset;
 
-        public PathEngine(int numberOfPaths)
+        public FasterPathEngine(int numberOfPaths)
         {
             _numberOfPaths = numberOfPaths;
             _featureCollection.AddFeature<IPathMappingFeature>(new PathMappingFeature());
@@ -24,12 +24,12 @@ namespace Qwack.Paths
             _featureCollection.AddFeature<IEngineFeature>(this);
         }
 
-        public BlockSet BlockSet => _blockset;
+        public FasterBlockSet BlockSet => _blockset;
         public int NumberOfPaths => _numberOfPaths;
 
         public void RunProcess()
         {
-            _blockset = new BlockSet(_numberOfPaths, _dimensions, _steps);
+            _blockset = new FasterBlockSet(_numberOfPaths, _dimensions, _steps);
 
             foreach (var block in _blockset)
             {

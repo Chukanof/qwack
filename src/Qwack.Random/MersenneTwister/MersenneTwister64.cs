@@ -99,7 +99,7 @@ namespace Qwack.Random.MersenneTwister
         /* generates a random number on [0,1]-real-interval */
         public double GenerateDouble() => (GenerateInteger() >> 11) * (1.0 / 9007199254740991.0);
 
-        public unsafe void Process(PathBlock block)
+        public unsafe void Process(IPathBlock block)
         {
             if (!UseNormalInverse)
             {

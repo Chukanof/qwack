@@ -16,7 +16,7 @@ namespace Qwack.MonteCarlo.Test
         [Fact]
         public void PathsGenerated()
         {
-            var engine = new PathEngine(2 << 8);
+            var engine = new FasterPathEngine(2 << 8);
             engine.AddPathProcess(new Random.MersenneTwister.MersenneTwister64()
             {
                  UseNormalInverse = true
@@ -50,7 +50,7 @@ namespace Qwack.MonteCarlo.Test
             engine.RunProcess();
 
 
-            var output = new OutputPathsToImage(engine,2000,1000);
+            //var output = new OutputPathsToImage(engine,2000,1000);
 
         }
     }

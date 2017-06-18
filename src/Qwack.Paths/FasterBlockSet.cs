@@ -11,7 +11,7 @@ namespace Qwack.Paths
     /// Contains a number of path blocks that make up an entire group of paths
     /// needed for pricing in memory
     /// </summary>
-    public class BlockSet : IBlockSet
+    public class FasterBlockSet : IBlockSet
     {
         private static readonly int _numberOfThreads = Environment.ProcessorCount;
         private int _numberOfPaths;
@@ -19,7 +19,7 @@ namespace Qwack.Paths
         private int _steps;
         private IPathBlock[] _blocks;
 
-        public BlockSet(int numberOfPaths, int factors, int steps)
+        public FasterBlockSet(int numberOfPaths, int factors, int steps)
         {
             if (numberOfPaths % PathBlock.MinNumberOfPaths != 0)
             {
@@ -31,10 +31,10 @@ namespace Qwack.Paths
 
             var pathsPerBlock = numberOfPaths / (_numberOfThreads * 2);
             var numberOfBlocks = numberOfPaths / pathsPerBlock;
-            _blocks = new PathBlock[numberOfBlocks];
+            _blocks = new FasterPathBlock[numberOfBlocks];
             for (var i = 0; i < _blocks.Length; i++)
             {
-                _blocks[i] = new PathBlock(pathsPerBlock, factors, steps);
+                _blocks[i] = new FasterPathBlock(pathsPerBlock, factors, steps);
             }
         }
 
@@ -81,7 +81,7 @@ namespace Qwack.Paths
             GC.SuppressFinalize(this);
         }
 
-        ~BlockSet()
+        ~FasterBlockSet()
         {
             Dispose();
         }

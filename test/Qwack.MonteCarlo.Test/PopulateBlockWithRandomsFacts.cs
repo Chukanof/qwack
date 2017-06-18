@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using Qwack.Paths;
@@ -34,7 +34,7 @@ namespace Qwack.MonteCarlo.Test
                 _numberOfDimensions = numberOfDimensions;
             }
 
-            public unsafe void Process(PathBlock block)
+            public unsafe void Process(IPathBlock block)
             {
                 var currentIndex = 0 * block.NumberOfPaths * block.NumberOfSteps;
                 for(var path = 0; path < block.NumberOfPaths; path += Vector<double>.Count)

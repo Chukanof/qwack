@@ -121,7 +121,7 @@ namespace Qwack.Curves.Benchmark
                 _numberOfDimensions = numberOfDimensions;
             }
 
-            public void Process(PathBlock block)
+            public void Process(IPathBlock block)
             {
                 //NoOp
             }
@@ -129,12 +129,12 @@ namespace Qwack.Curves.Benchmark
             public void SetupFeatures(FeatureCollection pathProcessFeaturesCollection)
             {
                 var mappingFeature = pathProcessFeaturesCollection.GetFeature<IPathMappingFeature>();
-                for (int i = 0; i < _numberOfDimensions; i++)
+                for (var i = 0; i < _numberOfDimensions; i++)
                 {
                     mappingFeature.AddDimension($"{_name}-{i}");
                 }
                 var dates = pathProcessFeaturesCollection.GetFeature<ITimeStepsFeature>();
-                for (int i = 0; i < _timesteps; i++)
+                for (var i = 0; i < _timesteps; i++)
                 {
                     dates.AddDate(DateTime.Now.Date.AddDays(i));
                 }

@@ -19,7 +19,7 @@ namespace Qwack.Paths.Processes
             _expiryDate = expiryDate;
             _nTimeSteps = nTimeSteps;
         }
-        public void Process(PathBlock block)
+        public void Process(IPathBlock block)
         {
             for (var i = 0; i < block.TotalBlockSize; i++)
             {

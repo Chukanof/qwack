@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using System.Text;
 using Qwack.Paths.Features;
@@ -14,6 +15,7 @@ namespace Qwack.Paths.Payoffs
         private int _assetIndex;
         private int _expiryIndex;
         private List<Vector<double>> _results = new List<Vector<double>>();
+        private Vector<double> _averageFactor = new Vector<double>(1.0 / Vector<double>.Count);
 
         public Put(string assetName, double strike, DateTime expiry)
         {
@@ -21,6 +23,8 @@ namespace Qwack.Paths.Payoffs
             _strike = strike;
             _assetName = assetName;
         }
+
+        public double AverageValue => _results.Average(av => Vector.Dot(av, _averageFactor));
 
         public void Finish(FeatureCollection collection)
         {
@@ -31,7 +35,7 @@ namespace Qwack.Paths.Payoffs
             _expiryIndex = dates.GetDateIndex(_expiry);          
         }
 
-        public void Process(PathBlock block)
+        public void Process(IPathBlock block)
         {
             for(var path = 0; path < block.NumberOfPaths;path += Vector<double>.Count)
             {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -14,5 +14,13 @@ namespace Qwack.Random.Sobol
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static double ConvertRandToDouble(uint rand) => rand * _convertToDoubleConstant;
+
+        private static int NumberOfBitsNeeded(int numberOfPoints)
+        {
+            var numberOfBits = Ceiling(Log(numberOfPoints) / Log(2.0));
+            return (int)numberOfBits;
+        }
+
+        
     }
 }
